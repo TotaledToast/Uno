@@ -17,7 +17,7 @@ namespace Open_Evening
         static List<Card> GenerateHand(List<Card> deck)
         {
             Random RandCard = new Random();
-            int special, color;
+            int color;
 
             for (int i = 0; i < 11; i++)
             {

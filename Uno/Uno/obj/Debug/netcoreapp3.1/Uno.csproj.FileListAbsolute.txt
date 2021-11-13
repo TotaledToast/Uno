@@ -11,3 +11,16 @@ C:\Users\charl\source\repos\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.csproj.CoreCompi
 C:\Users\charl\source\repos\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.dll
 C:\Users\charl\source\repos\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.pdb
 C:\Users\charl\source\repos\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.genruntimeconfig.cache
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\bin\Debug\netcoreapp3.1\Uno.exe
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\bin\Debug\netcoreapp3.1\Uno.deps.json
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\bin\Debug\netcoreapp3.1\Uno.runtimeconfig.json
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\bin\Debug\netcoreapp3.1\Uno.runtimeconfig.dev.json
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\bin\Debug\netcoreapp3.1\Uno.dll
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\bin\Debug\netcoreapp3.1\Uno.pdb
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.csprojAssemblyReference.cache
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.AssemblyInfoInputs.cache
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.AssemblyInfo.cs
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.csproj.CoreCompileInputs.cache
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.dll
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.pdb
+C:\Users\charl\source\repos\TotaledToast\Uno\Uno\Uno\obj\Debug\netcoreapp3.1\Uno.genruntimeconfig.cache
