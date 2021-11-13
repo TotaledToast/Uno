@@ -5,6 +5,7 @@ namespace Open_Evening
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             List<Card> deck1 = new List<Card>();
@@ -12,6 +13,86 @@ namespace Open_Evening
             GenerateHand(deck1);
             Console.WriteLine("------------------------");
             GenerateHand(deck2);
+            PlayRound(deck1);
+            foreach(Card item in deck1)
+            {
+                Console.ForegroundColor = item.color;
+                if (item.number <= 9)
+                {
+                    Console.WriteLine(item.number);
+                }
+                else
+                {
+                    Console.WriteLine(item.specialType);
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
+
+        static void PlayRound(List<Card> deck)
+        {
+            Card LastCardPlayed = new Card();
+            LastCardPlayed.number = 0;
+            LastCardPlayed.color = ConsoleColor.Green;
+            int Counter = 0, PickedCard;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("--Last Card Played--");
+            Console.ForegroundColor = LastCardPlayed.color;
+            Console.WriteLine(LastCardPlayed.number);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n");
+            Console.WriteLine("--Your Deck--");
+            foreach(Card item in deck)
+            {
+                item.PlaceInDeck = Counter;
+                Console.ForegroundColor = item.color;
+                if (item.number  <= 9)
+                {
+                    Console.WriteLine(item.number + "\t ----------  " + Counter);
+                }
+                else
+                {
+                    Console.WriteLine(item.specialType + "\t ----------  " + Counter);
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+                Counter++;
+                
+            }
+            Console.WriteLine("What card will you play?");
+            PickedCard = Convert.ToInt32(Console.ReadLine());
+            foreach(Card item in deck)
+            {
+                if (item.PlaceInDeck == PickedCard)
+                {
+                    Fight(LastCardPlayed, item, deck);
+                    break;
+                }
+            }
+
+        }
+
+        static void Fight(Card card1, Card card2, List<Card> deck)
+        {
+            if (card2.specialType == "Plus 4" || card2.specialType == "Pick Color")
+            {
+                switch (card2.number)
+                {
+                    case 11:
+                        break;
+                    case 14:
+                        break;
+                }
+
+            }
+            else if (card1.number == card2.number || card1.color == card2.color)
+            {
+                card1.number = card2.number;
+                card1.color = card2.color;
+                card1.specialType = card2.specialType;
+                card1.cardType = card2.cardType;
+                deck.Remove(card2);
+
+            }
         }
 
         static List<Card> GenerateHand(List<Card> deck)
@@ -74,7 +155,7 @@ namespace Open_Evening
         {
             int random;
             Random RandColor = new Random();
-            random = RandColor.Next(1, 4);
+            random = RandColor.Next(1, 5);
             if (item.specialType != "Plus 4" && item.specialType != "Pick Color")
             {
                 switch (random)
@@ -106,6 +187,7 @@ namespace Open_Evening
         public int number;
         public CardType cardType;
         public string specialType;
+        public int PlaceInDeck;
         public Card(int number, ConsoleColor color, string SpecialType)
         {
             this.number = number;
