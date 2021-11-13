@@ -10,30 +10,22 @@ namespace Open_Evening
         {
             List<Card> deck1 = new List<Card>();
             List<Card> deck2 = new List<Card>();
-            GenerateHand(deck1);
-            Console.WriteLine("------------------------");
-            GenerateHand(deck2);
-            PlayRound(deck1);
-            foreach(Card item in deck1)
-            {
-                Console.ForegroundColor = item.color;
-                if (item.number <= 9)
-                {
-                    Console.WriteLine(item.number);
-                }
-                else
-                {
-                    Console.WriteLine(item.specialType);
-                }
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-        }
-
-        static void PlayRound(List<Card> deck)
-        {
             Card LastCardPlayed = new Card();
             LastCardPlayed.number = 0;
             LastCardPlayed.color = ConsoleColor.Green;
+            GenerateHand(deck1);
+            Console.WriteLine("------------------------");
+            GenerateHand(deck2);
+            while (deck1.Count != 0 || deck2.Count != 0)
+            {
+                PlayRound(deck1, LastCardPlayed, 1);
+                PlayRound(deck2, LastCardPlayed, 2);
+            }
+        }
+
+        static void PlayRound(List<Card> deck, Card LastCardPlayed, int Player)
+        {
+            Console.Clear();
             int Counter = 0, PickedCard;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("--Last Card Played--");
@@ -41,7 +33,7 @@ namespace Open_Evening
             Console.WriteLine(LastCardPlayed.number);
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n");
-            Console.WriteLine("--Your Deck--");
+            Console.WriteLine("--Player" + Player + "'s Deck--");
             foreach(Card item in deck)
             {
                 item.PlaceInDeck = Counter;
@@ -80,6 +72,31 @@ namespace Open_Evening
                     case 11:
                         break;
                     case 14:
+                        int color;
+                        Console.WriteLine("What should the new color be?");
+                        Console.WriteLine("GREEN\t ------- 0");
+                        Console.WriteLine("RED\t ------- 1");
+                        Console.WriteLine("BLUE\t ------- 2");
+                        Console.WriteLine("YELLOW\t ------- 3");
+                        color = Convert.ToInt32(Console.ReadLine());
+                        switch(color)
+                        {
+                            case 0:
+                                card1.color = ConsoleColor.Green;
+                                break;
+                            case 1:
+                                card1.color = ConsoleColor.Red;
+                                break;
+                            case 2:
+                                card1.color = ConsoleColor.Blue;
+                                break;
+                            case 3:
+                                card1.color = ConsoleColor.Yellow;
+                                break;
+                        }
+                        card1.number = -1;
+                        card1.specialType = "";
+                        card1.cardType = Open_Evening.Card.CardType.Number;
                         break;
                 }
 
@@ -93,17 +110,20 @@ namespace Open_Evening
                 deck.Remove(card2);
 
             }
+            else
+            {
+                GenerateCard(deck);
+            }
         }
 
         static List<Card> GenerateHand(List<Card> deck)
         {
             Random RandCard = new Random();
-            int color;
 
             for (int i = 0; i < 11; i++)
             {
                 Card card = new Card();
-                card.number = RandCard.Next(0, 14);
+                card.number = RandCard.Next(0, 15);
                 card.cardType = Open_Evening.Card.CardType.Number;
                 if (card.number > 9)
                 {
@@ -130,26 +150,39 @@ namespace Open_Evening
                 GenerateColor(card);
                 deck.Add(card);
             }
+            return deck;
+        }
 
-            foreach (Card item in deck)
+        public static void GenerateCard(List<Card> deck)
+        {
+            Random rand = new Random();
+            Card card = new Card();
+            card.cardType = Open_Evening.Card.CardType.Number;
+            card.number = rand.Next(0, 15);
+            if (card.number > 9)
             {
-                if (item.cardType == Open_Evening.Card.CardType.Special)
+                card.cardType = Open_Evening.Card.CardType.Special;
+                switch (card.number)
                 {
-                    Console.ForegroundColor = item.color;
-                    Console.WriteLine(item.specialType);
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-                else
-                {
-                    color = RandCard.Next(1, 4);
-                    Console.ForegroundColor = item.color;
-                    Console.WriteLine(item.number);
-                    Console.ForegroundColor = ConsoleColor.White;
-
+                    case 10:
+                        card.specialType = "Plus 2";
+                        break;
+                    case 11:
+                        card.specialType = "Plus 4";
+                        break;
+                    case 12:
+                        card.specialType = "Stop";
+                        break;
+                    case 13:
+                        card.specialType = "Reverse";
+                        break;
+                    case 14:
+                        card.specialType = "Pick Color";
+                        break;
                 }
             }
-
-            return deck;
+            GenerateColor(card);
+            deck.Add(card);
         }
         public static void GenerateColor(Card item)
         {
