@@ -15,8 +15,9 @@ namespace Open_Evening
             OrderOfPlay Order = new OrderOfPlay();
             Order.Order = false;
             Order.Plus = 0;
+            Order.player = 0;
+            Order.max = 3;
             Card LastCardPlayed = new Card();
-            int play = 0;
             LastCardPlayed.number = 0;
             LastCardPlayed.color = ConsoleColor.Green;
             GenerateHand(deck1);
@@ -25,7 +26,7 @@ namespace Open_Evening
             GenerateHand(deck4);
             while (deck1.Count != 0 && deck2.Count != 0)
             {
-                switch (play)
+                switch (Order.player)
                 {
                     case 0:
                         PlayRound(deck1, LastCardPlayed, 1, Order);
@@ -40,32 +41,38 @@ namespace Open_Evening
                         PlayRound(deck4, LastCardPlayed, 4, Order);
                         break;
                 }
-                Console.WriteLine(Order.Order);
-                Console.ReadLine();
                 if (Order.Order == false)
                 {
-                    play++;
+                    Order.player++;
                 }
                 else
                 {
-                    play--;
+                    Order.player--;
                 }
-                if (play <= -1)
+                if (Order.player < Order.min)
                 {
-                    play = 3;
+                    Order.player = Order.max;
                 }
-                else if (play >= 4)
+                else if (Order.player > Order.max)
                 {
-                    play = 0;
+                    Order.player = Order.min;
                 }
             }
             if (deck1.Count == 0)
             {
                 Console.WriteLine("Congrats on winning Player1");
             }
-            else
+            else if (deck2.Count == 0)
             {
                 Console.WriteLine("Congrats on winning Player2");
+            }
+            else if (deck3.Count == 0)
+            {
+                Console.WriteLine("Congrats on winning Player3");
+            }
+            else if (deck4.Count == 0)
+            {
+                Console.WriteLine("Congrats on winning Player4");
             }
         }
 
@@ -229,6 +236,30 @@ namespace Open_Evening
                             Order.Plus = 0;
                         }
                         break;
+                    case 12:
+                        if (Order.Order == false)
+                        {
+                            if (Order.player == Order.max)
+                            {
+                                Order.player = Order.min;
+                            }
+                            else
+                            {
+                                Order.player++;
+                            }
+                        }
+                        else
+                        {
+                            if (Order.player == Order.min)
+                            {
+                                Order.player = Order.max;
+                            }
+                            else
+                            {
+                                Order.player--;
+                            }
+                        }
+                        break;
                     case 13:
                         if (Order.Order == false)
                         {
@@ -276,7 +307,7 @@ namespace Open_Evening
                             card.specialType = "Plus 4";
                             break;
                         case 12:
-                            card.specialType = "Stop";
+                            card.specialType = "Skip";
                             break;
                         case 13:
                             card.specialType = "Reverse";
@@ -310,7 +341,7 @@ namespace Open_Evening
                         card.specialType = "Plus 4";
                         break;
                     case 12:
-                        card.specialType = "Stop";
+                        card.specialType = "Skip";
                         break;
                     case 13:
                         card.specialType = "Reverse";
@@ -357,6 +388,9 @@ namespace Open_Evening
     {
         public bool Order;
         public int Plus;
+        public int player;
+        public int min = 0;
+        public int max;
     }
     public class Card
     {
