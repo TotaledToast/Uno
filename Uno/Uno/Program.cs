@@ -10,22 +10,54 @@ namespace Open_Evening
         {
             List<Card> deck1 = new List<Card>();
             List<Card> deck2 = new List<Card>();
+            List<Card> deck3 = new List<Card>();
+            List<Card> deck4 = new List<Card>();
+            OrderOfPlay Order = new OrderOfPlay();
+            Order.Order = false;
+            Order.Plus = 0;
             Card LastCardPlayed = new Card();
-            int Plus = 0;
+            int play = 0;
             LastCardPlayed.number = 0;
             LastCardPlayed.color = ConsoleColor.Green;
             GenerateHand(deck1);
-            Console.WriteLine("------------------------");
             GenerateHand(deck2);
-            Console.WriteLine(deck1.Count);
+            GenerateHand(deck3);
+            GenerateHand(deck4);
             while (deck1.Count != 0 && deck2.Count != 0)
             {
-                Plus = PlayRound(deck1, LastCardPlayed, 1, Plus);
-                Console.WriteLine(Plus);
+                switch (play)
+                {
+                    case 0:
+                        PlayRound(deck1, LastCardPlayed, 1, Order);
+                        break;
+                    case 1:
+                        PlayRound(deck2, LastCardPlayed, 2, Order);
+                        break;
+                    case 2:
+                        PlayRound(deck3, LastCardPlayed, 3, Order);
+                        break;
+                    case 3:
+                        PlayRound(deck4, LastCardPlayed, 4, Order);
+                        break;
+                }
+                Console.WriteLine(Order.Order);
                 Console.ReadLine();
-                Plus = PlayRound(deck2, LastCardPlayed, 2, Plus);
-                Console.WriteLine(Plus);
-                Console.ReadLine();
+                if (Order.Order == false)
+                {
+                    play++;
+                }
+                else
+                {
+                    play--;
+                }
+                if (play <= -1)
+                {
+                    play = 3;
+                }
+                else if (play >= 4)
+                {
+                    play = 0;
+                }
             }
             if (deck1.Count == 0)
             {
@@ -37,7 +69,7 @@ namespace Open_Evening
             }
         }
 
-        static int PlayRound(List<Card> deck, Card LastCardPlayed, int Player, int Plus)
+        static void PlayRound(List<Card> deck, Card LastCardPlayed, int Player, OrderOfPlay Order)
         {
             Console.Clear();
             int Counter = 0, PickedCard;
@@ -81,21 +113,20 @@ namespace Open_Evening
             {
                 if (item.PlaceInDeck == PickedCard)
                 {
-                    Plus = Fight(LastCardPlayed, item, deck, Plus);
+                    Fight(LastCardPlayed, item, deck, Order);
                     break;
                 }
             }
-            return Plus;
         }
 
-        static int Fight(Card card1, Card card2, List<Card> deck, int Plus)
+        static void Fight(Card card1, Card card2, List<Card> deck, OrderOfPlay Order)
         {
-            if (Plus > 0)
+            if (Order.Plus > 0)
             {
                 switch (card2.number)
                 {
                     case 10:
-                        Plus = Plus + 2;
+                        Order.Plus = Order.Plus + 2;
                         card1.number = card2.number;
                         card1.color = card2.color;
                         card1.specialType = card2.specialType;
@@ -103,7 +134,7 @@ namespace Open_Evening
                         deck.Remove(card2);
                         break;
                     case 11:
-                        Plus = Plus + 4;
+                        Order.Plus = Order.Plus + 4;
                         int color;
                         Console.WriteLine("What should the new color be?");
                         Console.WriteLine("GREEN\t ------- 0");
@@ -135,12 +166,12 @@ namespace Open_Evening
                         deck.Remove(card2);
                         break;
                     default:
-                        for (int i = 0; i < Plus; i++)
+                        for (int i = 0; i < Order.Plus; i++)
                         {
                             GenerateCard(deck);
                         }
                         card1.number = 0;
-                        Plus = 0;
+                        Order.Plus = 0;
                         break;
                 }
             }
@@ -149,7 +180,7 @@ namespace Open_Evening
                 switch (card2.number)
                 {
                     case 11:
-                        Plus = Plus + 4;
+                        Order.Plus = Order.Plus + 4;
                         break;
                     case 14:
                         break;
@@ -190,15 +221,23 @@ namespace Open_Evening
                 switch(card2.number)
                 {
                     case 10:
-                        Plus = Plus + 2;
+                        Order.Plus = Order.Plus + 2;
                         break;
                     case 11:
                         if(card1.number == 10 || card1.number == 11)
                         {
-                            Plus = 0;
+                            Order.Plus = 0;
                         }
                         break;
-                    case 12:
+                    case 13:
+                        if (Order.Order == false)
+                        {
+                            Order.Order = true;
+                        }
+                        else
+                        {
+                            Order.Order = false;
+                        }
                         break;
                     default:
                         break;
@@ -214,7 +253,6 @@ namespace Open_Evening
             {
                 GenerateCard(deck);
             }
-            return Plus;
         }
 
         static List<Card> GenerateHand(List<Card> deck)
@@ -315,6 +353,11 @@ namespace Open_Evening
         }
     }
 
+    public class OrderOfPlay
+    {
+        public bool Order;
+        public int Plus;
+    }
     public class Card
     {
         public ConsoleColor color;
