@@ -1,0 +1,329 @@
+using System;
+using System.Collections.Generic;
+
+namespace UNO_Part_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Card Test = new Card();
+            Effects EffectTracker = new Effects();
+            List<Card> Deck1 = new List<Card>();
+            List<Card> Deck2 = new List<Card>();
+            List<Card> Deck3 = new List<Card>();
+            List<Card> Deck4 = new List<Card>();
+            EffectTracker.LastCardPLayed = EffectTracker.AddLastCard();
+            Deck1 = Test.MakeDeck(7);
+            Deck2 = Test.MakeDeck(7);
+            Deck3 = Test.MakeDeck(7);
+            Deck4 = Test.MakeDeck(7);
+            //DisplayDeck(TestList, 2, EffectTracker);
+            do
+            {
+                switch (EffectTracker.CurrentPlayer)
+                {
+                    case 1:
+                        PlayRound(Deck1, EffectTracker.CurrentPlayer, EffectTracker);
+                        break;
+                    case 2:
+                        PlayRound(Deck2, EffectTracker.CurrentPlayer, EffectTracker);
+                        break;
+                    case 3:
+                        PlayRound(Deck3, EffectTracker.CurrentPlayer, EffectTracker);
+                        break;
+                    case 4:
+                        PlayRound(Deck4, EffectTracker.CurrentPlayer, EffectTracker);
+                        break;
+                }
+                Console.Clear();
+            } while (Deck1.Count != 0 && Deck2.Count != 0 && Deck3.Count != 0 && Deck4.Count != 0);
+            Console.Clear();
+            if(Deck1.Count == 0)
+            {
+                Console.WriteLine("Player1 WINS!");
+            }
+            else if (Deck2.Count == 0)
+            {
+                Console.WriteLine("Player2 WINS!");
+            }
+            else if (Deck3.Count == 0)
+            {
+                Console.WriteLine("Player3 WINS!");
+            }
+            else
+            {
+                Console.WriteLine("Player4 WINS!");
+            }
+            Console.ReadLine();
+        }
+        static void PlayRound(List<Card> Deck, int Player, Effects Effect)
+        {
+            int CardPicked;        
+            DisplayDeck(Deck, Player, Effect);
+            Console.Write("Pick a Card to play: ");
+            CardPicked = Convert.ToInt32(Console.ReadLine());
+            CardPlayed(Deck[CardPicked], Effect, Deck);
+            Effect.CurrentPlayer = RotatePlayer(Effect.CurrentPlayer, Effect.DirectionClockwise, Effect.Skipped);
+            Effect.Skipped = false;
+            
+        }
+        static int RotatePlayer(int CurrentPlayer, bool Clockwise, bool skipped)
+        {
+            int OutPlayer;
+            if(Clockwise == true)
+            {
+                if(skipped == true)
+                {
+                    OutPlayer = CurrentPlayer + 2;
+                }
+                else
+                {
+                    OutPlayer = CurrentPlayer + 1;
+                }
+                if (OutPlayer > 4)
+                {
+                    OutPlayer = OutPlayer - 4;
+                }
+            }
+            else
+            {
+                if(skipped == true)
+                {
+                    OutPlayer = CurrentPlayer - 2;
+                }
+                else
+                {
+                    OutPlayer = CurrentPlayer - 1;
+                }
+                if (OutPlayer < 4)
+                {
+                    OutPlayer = OutPlayer + 4;
+                }
+            }
+            return OutPlayer;
+        }
+        static Effects CardPlayed(Card CardPlayed, Effects Effect, List<Card> Deck)
+        {
+            Card DrawHelp = new Card();
+            if (Effect.CardPlus > 0 && (CardPlayed.Number != 10 && CardPlayed.Number != 11))
+            {
+                DrawHelp.AddCard(Deck, Effect.CardPlus);
+                Console.WriteLine("You Picked Up " + Effect.CardPlus + " Cards!");
+                Console.ReadLine();
+                Effect.CardPlus = 0;
+                return Effect;
+            }
+            if(CardPlayed.Number == 11 || CardPlayed.Number == 12)
+            {
+                int ColourVar;
+                if(CardPlayed.Number == 11)
+                {
+                    Effect.CardPlus = Effect.CardPlus + 4;
+                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("RED: 0");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("GREEN: 1");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("BLUE: 2");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("YELLOW: 3");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Pick The Colour For The Next Card:");
+                ColourVar = Convert.ToInt32(Console.ReadLine());
+                switch (ColourVar)
+                {
+                    case 0:
+                        Effect.LastCardPLayed.CardColour = ConsoleColor.Red;
+                        break;
+                    case 1:
+                        Effect.LastCardPLayed.CardColour = ConsoleColor.Green;
+                        break;
+                    case 2:
+                        Effect.LastCardPLayed.CardColour = ConsoleColor.Blue;
+                        break;
+                    case 3:
+                        Effect.LastCardPLayed.CardColour = ConsoleColor.Yellow;
+                        break;
+                }
+                Effect.LastCardPLayed.Number = 0;
+                Effect.LastCardPLayed.Type = Card.CardType.Number;
+                Deck.Remove(CardPlayed);
+            }
+            else if(CardPlayed.Number == Effect.LastCardPLayed.Number || CardPlayed.CardColour == Effect.LastCardPLayed.CardColour)
+            {
+                switch (CardPlayed.Number)
+                {
+                    case 10:
+                        Effect.CardPlus = Effect.CardPlus + 2;
+                        break;
+                    case 13:
+                        Effect.Skipped = true;
+                        break;
+                    case 14:
+                        if (Effect.DirectionClockwise == true)
+                        {
+                            Effect.DirectionClockwise = false;
+                        }
+                        else
+                        {
+                            Effect.DirectionClockwise = true;
+                        }
+                        break;
+                }
+                Effect.LastCardPLayed = CardPlayed;
+                Deck.Remove(CardPlayed);
+            }
+            else
+            {
+                DrawHelp.AddCard(Deck, 1);
+                Console.WriteLine("You Picked Up 1 Card!");
+                Console.ReadLine();
+            }
+            return Effect;
+        }
+        static void DisplayDeck(List<Card> Deck, int Player, Effects Effect)
+        {
+            int Count = 0;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Player " + Player + "'s Turn:");
+            Console.Write("Last Card Played Was: ");
+            Console.ForegroundColor = Effect.LastCardPLayed.CardColour;
+            if (Effect.LastCardPLayed.Type == Card.CardType.Number)
+            {
+                Console.Write(Effect.LastCardPLayed.Number + "\n\n");
+            }
+            else
+            {
+                Console.Write(Effect.LastCardPLayed.Type + "\n\n");
+            }
+            foreach (Card x in Deck)
+            {
+                Console.ForegroundColor = x.CardColour;
+                if (x.Type == Card.CardType.Number)
+                {
+                    Console.WriteLine(x.Number + "\t:" + Count);
+                }
+                else
+                {
+                    Console.WriteLine(x.Type + "\t:" + Count);
+                }
+                Count++;
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+    }
+    class Card
+    {
+        public int Number;
+        public ConsoleColor CardColour;
+        public CardType Type;
+        public enum CardType
+        {
+            Number,
+            Plus2,
+            Plus4,
+            Wild,
+            Skip,
+            Reverse
+        }
+        public Card MakeCard(int Number, ConsoleColor Colour)
+        {
+            Card NewCard = new Card();
+            NewCard.Number = Number;
+            NewCard.CardColour = Colour;
+            switch (Number)
+            {
+                case 10:
+                    NewCard.Type = CardType.Plus2;
+                    break;
+                case 11:
+                    NewCard.Type = CardType.Plus4;
+                    NewCard.CardColour = ConsoleColor.White;
+                    break;
+                case 12:
+                    NewCard.Type = CardType.Wild;
+                    NewCard.CardColour = ConsoleColor.White;
+                    break;
+                case 13:
+                    NewCard.Type = CardType.Skip;
+                    break;
+                case 14:
+                    NewCard.Type = CardType.Reverse;
+                    break;
+                default:
+                    NewCard.Type = CardType.Number;
+                    break;
+            }
+            return NewCard;
+        }
+        public List<Card> MakeDeck(int Length)
+        {
+            List<Card> OutList = new List<Card>();
+                AddCard(OutList, Length);
+            return OutList;
+        }
+        public List<Card> AddCard(List<Card> OutList, int length)
+        {
+            Random Rand = new Random();
+            int Number, ColourNumber;
+            ConsoleColor Colour;
+            for (int i = 0; i < length; i++)
+            {
+                Number = Rand.Next(0, 15);
+                ColourNumber = Rand.Next(0, 4);
+                switch (ColourNumber)
+                {
+                    case 0:
+                        Colour = ConsoleColor.Red;
+                        break;
+                    case 1:
+                        Colour = ConsoleColor.Green;
+                        break;
+                    case 2:
+                        Colour = ConsoleColor.Yellow;
+                        break;
+                    default:
+                        Colour = ConsoleColor.Blue;
+                        break;
+                }
+                OutList.Add(MakeCard(Number, Colour)); 
+            }
+            return OutList;
+        }
+    }
+    class Effects
+    {
+        public int CardPlus = 0, CurrentPlayer = 1;
+        public Card LastCardPLayed;
+        public bool Skipped = false, DirectionClockwise = true, FirstTurn = true, Draw = false;
+        public Card AddLastCard()
+        {
+            List<Card> Temp = new List<Card>();
+            Card Temp2 = new Card();
+            Random Rand = new Random();
+            int Number, ColourNumber;
+            ConsoleColor Colour;
+                Number = Rand.Next(0, 10);
+                ColourNumber = Rand.Next(0, 4);
+                switch (ColourNumber)
+                {
+                    case 0:
+                        Colour = ConsoleColor.Red;
+                        break;
+                    case 1:
+                        Colour = ConsoleColor.Green;
+                        break;
+                    case 2:
+                        Colour = ConsoleColor.Yellow;
+                        break;
+                    default:
+                        Colour = ConsoleColor.Blue;
+                        break;
+                }
+                Temp.Add(Temp2.MakeCard(Number, Colour));
+            return Temp[0];
+        }
+    }
+}
