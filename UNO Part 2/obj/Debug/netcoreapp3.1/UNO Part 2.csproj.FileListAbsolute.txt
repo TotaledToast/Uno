@@ -1,11 +1,11 @@
+N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.csprojAssemblyReference.cache
+N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.AssemblyInfoInputs.cache
+N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.AssemblyInfo.cs
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\bin\Debug\netcoreapp3.1\UNO Part 2.exe
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\bin\Debug\netcoreapp3.1\UNO Part 2.deps.json
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\bin\Debug\netcoreapp3.1\UNO Part 2.runtimeconfig.json
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\bin\Debug\netcoreapp3.1\UNO Part 2.runtimeconfig.dev.json
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\bin\Debug\netcoreapp3.1\UNO Part 2.dll
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\bin\Debug\netcoreapp3.1\UNO Part 2.pdb
-N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.csprojAssemblyReference.cache
-N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.AssemblyInfoInputs.cache
-N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.AssemblyInfo.cs
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.dll
 N:\0 A Level Comp\Mayes\Classwork\Uno\UNO Part 2\obj\Debug\netcoreapp3.1\UNO Part 2.pdb

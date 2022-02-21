@@ -58,10 +58,27 @@ namespace UNO_Part_2
         }
         static void PlayRound(List<Card> Deck, int Player, Effects Effect)
         {
-            int CardPicked;        //variable for the picked card
+            int CardPicked = -1;        //variable for the picked card
+            bool ValidPick = false;
             DisplayDeck(Deck, Player, Effect);  //shows deck
             Console.Write("Pick a Card to play: ");
-            CardPicked = Convert.ToInt32(Console.ReadLine());   //picks a card from available deck, need to put measures in place to ensure a correct option is picked
+            do
+            {
+                try
+                {
+                    CardPicked = Convert.ToInt32(Console.ReadLine());
+                    if(CardPicked < Deck.Count && CardPicked > -1)
+                    {
+                        ValidPick = true;
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Please Try Again");
+                }  
+            } while (ValidPick == false);  
+            
+            //picks a card from available deck, need to put measures in place to ensure a correct option is picked
             CardPlayed(Deck[CardPicked], Effect, Deck); // plays the card
             Effect.CurrentPlayer = RotatePlayer(Effect.CurrentPlayer, Effect.DirectionClockwise, Effect.Skipped);
             Effect.Skipped = false;                                                                                 //rotates to the next players and skips players is necessary
@@ -115,7 +132,8 @@ namespace UNO_Part_2
             }
             if(CardPlayed.Number == 11 || CardPlayed.Number == 12)
             {
-                int ColourVar;
+                bool ColorPicked = false;
+                int ColourVar = -1;
                 if(CardPlayed.Number == 11)
                 {
                     Effect.CardPlus = Effect.CardPlus + 4;
@@ -130,7 +148,23 @@ namespace UNO_Part_2
                 Console.WriteLine("YELLOW: 3");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Pick The Colour For The Next Card:");
-                ColourVar = Convert.ToInt32(Console.ReadLine());        //allows player to pick the next colour
+                do
+                {
+                    try
+                    {
+                        ColourVar = Convert.ToInt32(Console.ReadLine());
+                        if(ColourVar < 4 && ColourVar > -1)
+                        {
+                            ColorPicked = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Try Again");
+                    }    
+                } while (ColorPicked == false);     
+                
+                //allows player to pick the next colour
                 switch (ColourVar)
                 {
                     case 0:
