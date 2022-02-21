@@ -17,8 +17,7 @@ namespace UNO_Part_2
             Deck1 = Test.MakeDeck(7);
             Deck2 = Test.MakeDeck(7);
             Deck3 = Test.MakeDeck(7);
-            Deck4 = Test.MakeDeck(7);
-            //DisplayDeck(TestList, 2, EffectTracker);
+            Deck4 = Test.MakeDeck(7);       //Generates All Decks and Effect Tracker
             do
             {
                 switch (EffectTracker.CurrentPlayer)
@@ -33,8 +32,8 @@ namespace UNO_Part_2
                         PlayRound(Deck3, EffectTracker.CurrentPlayer, EffectTracker);
                         break;
                     case 4:
-                        PlayRound(Deck4, EffectTracker.CurrentPlayer, EffectTracker);
-                        break;
+                        PlayRound(Deck4, EffectTracker.CurrentPlayer, EffectTracker);   
+                        break;                                                          //Allows each player to play, Will Stop When A Player Wins
                 }
                 Console.Clear();
             } while (Deck1.Count != 0 && Deck2.Count != 0 && Deck3.Count != 0 && Deck4.Count != 0);
@@ -53,19 +52,19 @@ namespace UNO_Part_2
             }
             else
             {
-                Console.WriteLine("Player4 WINS!");
+                Console.WriteLine("Player4 WINS!");     //declares which player wins, definitely better way of doing this
             }
             Console.ReadLine();
         }
         static void PlayRound(List<Card> Deck, int Player, Effects Effect)
         {
-            int CardPicked;        
-            DisplayDeck(Deck, Player, Effect);
+            int CardPicked;        //variable for the picked card
+            DisplayDeck(Deck, Player, Effect);  //shows deck
             Console.Write("Pick a Card to play: ");
-            CardPicked = Convert.ToInt32(Console.ReadLine());
-            CardPlayed(Deck[CardPicked], Effect, Deck);
+            CardPicked = Convert.ToInt32(Console.ReadLine());   //picks a card from available deck, need to put measures in place to ensure a correct option is picked
+            CardPlayed(Deck[CardPicked], Effect, Deck); // plays the card
             Effect.CurrentPlayer = RotatePlayer(Effect.CurrentPlayer, Effect.DirectionClockwise, Effect.Skipped);
-            Effect.Skipped = false;
+            Effect.Skipped = false;                                                                                 //rotates to the next players and skips players is necessary
             
         }
         static int RotatePlayer(int CurrentPlayer, bool Clockwise, bool skipped)
@@ -79,11 +78,11 @@ namespace UNO_Part_2
                 }
                 else
                 {
-                    OutPlayer = CurrentPlayer + 1;
+                    OutPlayer = CurrentPlayer + 1;      //add a certain amount to the current players
                 }
                 if (OutPlayer > 4)
                 {
-                    OutPlayer = OutPlayer - 4;
+                    OutPlayer = OutPlayer - 4;      //if the player isnt in the accepable range it will loop back around
                 }
             }
             else
@@ -94,11 +93,11 @@ namespace UNO_Part_2
                 }
                 else
                 {
-                    OutPlayer = CurrentPlayer - 1;
+                    OutPlayer = CurrentPlayer - 1;   //has to minus for reversed play
                 }
                 if (OutPlayer < 4)
                 {
-                    OutPlayer = OutPlayer + 4;
+                    OutPlayer = OutPlayer + 4;  //loops back when outside acceptable range
                 }
             }
             return OutPlayer;
@@ -111,7 +110,7 @@ namespace UNO_Part_2
                 DrawHelp.AddCard(Deck, Effect.CardPlus);
                 Console.WriteLine("You Picked Up " + Effect.CardPlus + " Cards!");
                 Console.ReadLine();
-                Effect.CardPlus = 0;
+                Effect.CardPlus = 0;    //checks if an acceptable card was played after a +2/+4 and will respond accordingly
                 return Effect;
             }
             if(CardPlayed.Number == 11 || CardPlayed.Number == 12)
@@ -131,7 +130,7 @@ namespace UNO_Part_2
                 Console.WriteLine("YELLOW: 3");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Pick The Colour For The Next Card:");
-                ColourVar = Convert.ToInt32(Console.ReadLine());
+                ColourVar = Convert.ToInt32(Console.ReadLine());        //allows player to pick the next colour
                 switch (ColourVar)
                 {
                     case 0:
@@ -144,12 +143,12 @@ namespace UNO_Part_2
                         Effect.LastCardPLayed.CardColour = ConsoleColor.Blue;
                         break;
                     case 3:
-                        Effect.LastCardPLayed.CardColour = ConsoleColor.Yellow;
+                        Effect.LastCardPLayed.CardColour = ConsoleColor.Yellow; //sets colour of new last card played
                         break;
                 }
                 Effect.LastCardPLayed.Number = 0;
-                Effect.LastCardPLayed.Type = Card.CardType.Number;
-                Deck.Remove(CardPlayed);
+                Effect.LastCardPLayed.Type = Card.CardType.Number;      //sets basic next card played
+                Deck.Remove(CardPlayed);      //removes card played from deck
             }
             else if(CardPlayed.Number == Effect.LastCardPLayed.Number || CardPlayed.CardColour == Effect.LastCardPLayed.CardColour)
             {
@@ -170,15 +169,15 @@ namespace UNO_Part_2
                         {
                             Effect.DirectionClockwise = true;
                         }
-                        break;
+                        break;                                  //stores each special effect for the special cards
                 }
-                Effect.LastCardPLayed = CardPlayed;
-                Deck.Remove(CardPlayed);
+                Effect.LastCardPLayed = CardPlayed; 
+                Deck.Remove(CardPlayed);            //sets new last card played and removes old card from deck
             }
             else
             {
                 DrawHelp.AddCard(Deck, 1);
-                Console.WriteLine("You Picked Up 1 Card!");
+                Console.WriteLine("You Picked Up 1 Card!"); //if the player can play a card they pick up a card
                 Console.ReadLine();
             }
             return Effect;
@@ -196,7 +195,7 @@ namespace UNO_Part_2
             }
             else
             {
-                Console.Write(Effect.LastCardPLayed.Type + "\n\n");
+                Console.Write(Effect.LastCardPLayed.Type + "\n\n");     //differentiates between number cards and specials
             }
             foreach (Card x in Deck)
             {
@@ -207,7 +206,7 @@ namespace UNO_Part_2
                 }
                 else
                 {
-                    Console.WriteLine(x.Type + "\t:" + Count);
+                    Console.WriteLine(x.Type + "\t:" + Count);      //goes through every card in the deck
                 }
                 Count++;
             }
@@ -226,13 +225,13 @@ namespace UNO_Part_2
             Plus4,
             Wild,
             Skip,
-            Reverse
+            Reverse                 //sets types of card as well as other variables
         }
         public Card MakeCard(int Number, ConsoleColor Colour)
         {
             Card NewCard = new Card();
             NewCard.Number = Number;
-            NewCard.CardColour = Colour;
+            NewCard.CardColour = Colour;    //sets the number and color of the new card
             switch (Number)
             {
                 case 10:
@@ -254,14 +253,14 @@ namespace UNO_Part_2
                     break;
                 default:
                     NewCard.Type = CardType.Number;
-                    break;
+                    break;                                   //gives the new card a type if required, if not the type is number
             }
             return NewCard;
         }
         public List<Card> MakeDeck(int Length)
         {
             List<Card> OutList = new List<Card>();
-                AddCard(OutList, Length);
+            AddCard(OutList, Length);           //adds a card a certain amount of times for a deck
             return OutList;
         }
         public List<Card> AddCard(List<Card> OutList, int length)
@@ -271,8 +270,8 @@ namespace UNO_Part_2
             ConsoleColor Colour;
             for (int i = 0; i < length; i++)
             {
-                Number = Rand.Next(0, 15);
-                ColourNumber = Rand.Next(0, 4);
+                Number = Rand.Next(0, 15);//rand isn't inclusive on upper bound
+                ColourNumber = Rand.Next(0, 4); //gives cards a random number and colour
                 switch (ColourNumber)
                 {
                     case 0:
@@ -297,7 +296,7 @@ namespace UNO_Part_2
     {
         public int CardPlus = 0, CurrentPlayer = 1;
         public Card LastCardPLayed;
-        public bool Skipped = false, DirectionClockwise = true, FirstTurn = true, Draw = false;
+        public bool Skipped = false, DirectionClockwise = true, FirstTurn = true, Draw = false; //adds all relevant game data to the effects class
         public Card AddLastCard()
         {
             List<Card> Temp = new List<Card>();
@@ -322,7 +321,7 @@ namespace UNO_Part_2
                         Colour = ConsoleColor.Blue;
                         break;
                 }
-                Temp.Add(Temp2.MakeCard(Number, Colour));
+                Temp.Add(Temp2.MakeCard(Number, Colour));   //uses a modified AddCard function as the starting card shouldn't be a special card
             return Temp[0];
         }
     }
