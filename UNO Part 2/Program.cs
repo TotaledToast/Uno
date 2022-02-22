@@ -78,7 +78,7 @@ namespace UNO_Part_2
                 }  
             } while (ValidPick == false);  
             
-            //picks a card from available deck, need to put measures in place to ensure a correct option is picked
+            //picks a card from available deck
             CardPlayed(Deck[CardPicked], Effect, Deck); // plays the card
             Effect.CurrentPlayer = RotatePlayer(Effect.CurrentPlayer, Effect.DirectionClockwise, Effect.Skipped);
             Effect.Skipped = false;                                                                                 //rotates to the next players and skips players is necessary
@@ -86,7 +86,7 @@ namespace UNO_Part_2
         }
         static int RotatePlayer(int CurrentPlayer, bool Clockwise, bool skipped)
         {
-            int OutPlayer;
+            int OutPlayer = 0;
             if(Clockwise == true)
             {
                 if(skipped == true)
@@ -102,7 +102,7 @@ namespace UNO_Part_2
                     OutPlayer = OutPlayer - 4;      //if the player isnt in the accepable range it will loop back around
                 }
             }
-            else
+            else if(Clockwise == false)
             {
                 if(skipped == true)
                 {
@@ -112,7 +112,7 @@ namespace UNO_Part_2
                 {
                     OutPlayer = CurrentPlayer - 1;   //has to minus for reversed play
                 }
-                if (OutPlayer < 4)
+                if (OutPlayer < 1)
                 {
                     OutPlayer = OutPlayer + 4;  //loops back when outside acceptable range
                 }
